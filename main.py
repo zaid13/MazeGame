@@ -1,4 +1,5 @@
-
+from agent import *
+from search_algo import *
 
 def readfile():
     f = open("demofile2.txt", "a")
@@ -15,3 +16,5 @@ def readfile():
 
 array2D = readfile()
 print(array2D)
+agent = Agent()
+DFS(array2D, agent )
