@@ -609,27 +609,28 @@ class PartialExpr:
     def __repr__(self):
         return "PartialExpr('{}', {})".format(self.op, self.lhs)
 
-    def expr(x):
-        """Shortcut to create an Expression. x is a str in which:
+    # def expr(x):
+    #     """Shortcut to create an Expression. x is a str in which:
+    #
+    #     - identifiers are automatically defined as Symbols.
+    #     - ==> is treated as an infix |'==>'|, as are <== and <=>.
+    #     If x is already an Expression, it is returned unchanged. Example:
+    #     >>> expr('P & Q ==> Q')
+    #     ((P & Q) ==> Q)
+    #     """
+    #     if isinstance(x, str):
+    #         return eval(expr_handle_infix_ops(x), defaultkeydict(Symbol))
+    #     else:
+    #         return x
+    #
+    # infix_ops = '==> <== <=>'.split()
+    #
+    # def expr_handle_infix_ops(x):
+    #     """Given a str, return a new str with ==> replaced by |'==>'|,etc.>>> expr_handle_infix_ops('P ==> Q')"P |'==>'| Q"""
+    #     for op in infix_ops:
+    #         x = x.replace(op, '|' + repr(op) + '|')
+    #     return x
 
-        - identifiers are automatically defined as Symbols.
-        - ==> is treated as an infix |'==>'|, as are <== and <=>.
-        If x is already an Expression, it is returned unchanged. Example:
-        >>> expr('P & Q ==> Q')
-        ((P & Q) ==> Q)
-        """
-        if isinstance(x, str):
-            return eval(expr_handle_infix_ops(x), defaultkeydict(Symbol))
-        else:
-            return x
-
-    infix_ops = '==> <== <=>'.split()
-
-    def expr_handle_infix_ops(x):
-        """Given a str, return a new str with ==> replaced by |'==>'|,etc.>>> expr_handle_infix_ops('P ==> Q')"P |'==>'| Q"""
-        for op in infix_ops:
-            x = x.replace(op, '|' + repr(op) + '|')
-        return x
 
 class defaultkeydict(collections.defaultdict):
     """Like defaultdict, but the default_factory is a function of the
@@ -732,4 +733,3 @@ class Bool(int):
 
 T = Bool(True)
 F = Bool(False)
-
