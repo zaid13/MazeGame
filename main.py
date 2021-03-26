@@ -14,7 +14,8 @@ def readfile():
     return array2D
 
 
-array2D = readfile()
-print(array2D)
-agent = Agent()
-DFS(array2D, agent )
+inputt = int(input("enter 1 for DFS and anyother for BFS"))
+if(inputt==1):
+    DFS(readfile(), Agent())
+else:
+    BFS(readfile(), Agent())

@@ -61,12 +61,12 @@ class Agent:
          self.pos.y = 4
          self.stack.append(Position(self.pos.x,self.pos.y))
          print('initizlizing agent')
-     def move(self,array2D):
+     def moveBfs(self,array2D):
         self.ctr+=1
         oldpos = copy.deepcopy(self.pos)
         array2D[oldpos.y][oldpos.x] = "X"
         if(Position(1,10) == self.pos):
-            self.writeToFile(array2D)
+            self.writeToFileBfs(array2D)
             exit(0)
         if ( self.pos.moveDown(array2D) > 0 or self.pos.moveRight(array2D) > 0 or self.pos.moveLeft(array2D) > 0 or self.pos.moveUp(array2D) > 0  ):
             self.stack.append(Position(oldpos.x, oldpos.y))
@@ -75,10 +75,10 @@ class Agent:
             return Position(-1,-1)
 
 
-     def recoverDeadend(self,array):
+     def recoverDeadendBfs(self,array):
             self.ctr+=1
             if(len(self.stack) == 0):
-                self.writeToFile(array)
+                self.writeToFileBfs(array)
                 exit(-1)
             len(self.stack)
             self.pos = self.stack.pop()
@@ -91,10 +91,45 @@ class Agent:
                 self.pos.print()
                 self.stack.append(self.pos)
             return
+     def moveDfs(self,array2D):
+        self.ctr+=1
+        oldpos = copy.deepcopy(self.pos)
+        array2D[oldpos.y][oldpos.x] = "X"
+        if(Position(1,10) == self.pos):
+            self.writeToFileDfs(array2D)
+            exit(0)
+        if ( self.pos.moveDown(array2D) > 0 or self.pos.moveRight(array2D) > 0 or self.pos.moveLeft(array2D) > 0 or self.pos.moveUp(array2D) > 0  ):
+            self.stack.append(Position(oldpos.x, oldpos.y))
+            return self.pos
+        else:
+            return Position(-1,-1)
 
 
-     def writeToFile(self,array):
-         with open('listfile.txt', 'w') as filehandle:
+     def recoverDeadendDfs(self,array):
+            self.ctr+=1
+            if(len(self.stack) == 0):
+                self.writeToFileDfs(array)
+                exit(-1)
+            len(self.stack)
+            self.pos = self.stack.pop(1)
+            if (self.pos.y > 0 and array[self.pos.y - 1][self.pos.x] == '0' or
+            self.pos.y < 11 and array[self.pos.y + 1][self.pos.x] == '0' or
+            self.pos.x < 11 and array[self.pos.y][self.pos.x + 1] == '0' or
+            self.pos.x > 0 and array[self.pos.y][self.pos.x - 1] == '0'):
+                print("this node will be used agian")
+                print('self.pos')
+                self.pos.print()
+                self.stack.append(self.pos)
+            return
+
+
+     def writeToFileBfs(self,array):
+         with open('PathTAkenBfs.txt', 'w') as filehandle:
+             for listitem in array:
+                 filehandle.write('%s\n' % listitem)
+             filehandle.write('%s\n' % self.ctr)
+     def writeToFileDfs(self,array):
+         with open('PathtakenDfs.txt', 'w') as filehandle:
              for listitem in array:
                  filehandle.write('%s\n' % listitem)
              filehandle.write('%s\n' % self.ctr)
